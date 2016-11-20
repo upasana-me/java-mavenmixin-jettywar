@@ -1,0 +1,131 @@
+<project 
+    xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>com.danhaywood.mavenmixin</groupId>
+    <artifactId>jettywar</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+    
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>
+        Maven mixin to package up a webapp as a WAR file, and to allow the webapp to be run using the jetty maven plugin
+    </description>
+    
+    <url>https://github.com/danhaywood/java-mavenmixin-jettywar</url>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:git:git@github.com:danhaywood/java-mavenmixin-jettywar.git</connection>
+        <developerConnection>scm:git:git@github.com:danhaywood/java-mavenmixin-jettywar.git</developerConnection>
+        <url>git@github.com:danhaywood/java-mavenmixin-jettywar.git</url>
+    </scm>
+    <developers>
+        <developer>
+            <id>danhaywood</id>
+            <name>Dan Haywood</name>
+            <email>dan@haywood-associates.co.uk</email>
+        </developer>
+    </developers>    
+
+    <properties>
+        <danhaywood-mavenmixin-jettywar.warName>simplewar</danhaywood-mavenmixin-jettywar.warName>
+    </properties>
+        
+    <profiles>
+        <profile>
+            <id>danhaywood-mavenmixin-jettywar</id>
+            <activation>
+                <property>
+                    <name>!skip.danhaywood-mavenmixin-jettywar</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>2.4</version>
+                        <configuration>
+                            <warName>${danhaywood-mavenmixin-jettywar.warName}</warName>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>false</addClasspath>
+                                </manifest>
+                                <manifestEntries>
+                                    <Build-Time>${maven.build.timestamp}</Build-Time>
+                                    <Build-Host>${agent.name}</Build-Host>
+                                    <Build-User>${user.name}</Build-User>
+                                    <Build-Maven>Maven ${maven.version}</Build-Maven>
+                                    <Build-Java>${java.version}</Build-Java>
+                                    <Build-OS>${os.name}</Build-OS>
+                                    <Build-Label>${project.version}</Build-Label>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
+                        <version>9.3.5.v20151012</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>danhaywood-mavenmixin-sonatyperelease</id>
+            <!-- 
+            this profile is not part of the mixin, but is required to be defined as a profile
+            in order to release this mixin pom.xml to Maven Central repo
+            -->
+            <build>
+                <plugins>
+                    <!-- http://central.sonatype.org/pages/apache-maven.html -->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.2</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                    <!-- http://kohsuke.org/pgp-maven-plugin/secretkey.html instead of maven-gpg-plugin -->
+                    <plugin>
+                        <groupId>org.kohsuke</groupId>
+                        <artifactId>pgp-maven-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+
+
+    
+</project>
