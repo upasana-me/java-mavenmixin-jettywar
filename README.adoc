@@ -60,6 +60,29 @@ To configure:
 * Specify the mandatory input properties (see above).
 
 
+The packaging sets up a manifest that references two properties, `maven.version` and `agent.name`.
+These are not defined under normal circumstances (and if they remain unset then the manifest will simply not report this information).
+But if you wish, you can define the `maven.version` property, using the `build-helper-maven-plugin`:
+
+[source,xml]
+----
+<plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>build-helper-maven-plugin</artifactId>
+    <version>1.8</version>
+    <executions>
+        <execution>
+            <phase>validate</phase>
+            <goals>
+                <goal>maven-version</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+----
+
+As for `agent.name`, this can be set up by the continuous integration server.
+
 To disable the (profile contributed by this) mixin, pass the following system property to `mvn`:
 
 [source,bash]
