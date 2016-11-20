@@ -12,7 +12,7 @@ This profile can be disabled using a Maven property.
 
 == Input Properties
 
-The plugin requires two properties:
+The plugin requires one property:
 
 [source,xml]
 ----
@@ -24,7 +24,7 @@ The plugin requires two properties:
 ----
 <1> the name of the war file to generate.
 
-These properties should be specified in the consuming module.
+This property should be specified in the consuming module.
 
 
 
