@@ -91,17 +91,24 @@ mvn -Dskip.danhaywood-mavenmixin-jettywar
 ----
 
 
-== How to run
+== How to use
 
-Use:
+To package the WAR file:
 
-* `mvn package` to package the webapp
-* `mvn jetty:run` to run the webapp using Jetty. +
-+
-[TIP]
-====
-Make sure you have ``cd``ed into the `webapp` directory; this can't be run from the parent directory.
-====
+[source,bash]
+----
+mvn package
+----
+
+To run the webapp using Jetty:
+
+[source,bash]
+----
+mvn -pl webapp jetty:run
+----
+
+(where `webapp` is the module that uses this mixin).
+
 
 
 == Known issues
