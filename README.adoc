@@ -10,29 +10,61 @@ The appropriate configuration is included in a `<profile>` which is automaticall
 This profile can be disabled using a Maven property.
 
 
-== Input Properties
-
-The plugin requires one property:
-
-[source,xml]
-----
-<properties>
-    <danhaywood-mavenmixin-jettywar.warName>                            <!--1-->
-        simplewar
-    </danhaywood-mavenmixin-jettywar.warName>
-</properties>
-----
-<1> the name of the war file to generate.
-
-This property should be specified in the consuming module.
-
-
 
 == How to Configure
 
 To configure:
 
-* add the following to the `pom.xml` of the webapp module (with `<packaging>war</packaging>`): +
+* copy and paste the following into either the `pom.xml` of the consuming module or (better still) the `pom.xml` of the top-level parent of the consuming module: +
++
+[source,xml]
+----
+<properties>
+    ...
+    <mavenmixin-jettywar.version>0.0.2</mavenmixin-jettywar.version>
+    
+    <maven-war-plugin.version>2.4</maven-war-plugin.version>
+    <jetty-maven-plugin.version>9.3.5.v20151012</jetty-maven-plugin.version>
+    ...
+</properties>
+----
++
+and: +
++
+[source,xml]
+----
+<build>
+    <pluginManagement>
+        <plugins>
+            ...
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty-maven-plugin.version}</version>
+            </plugin>
+            ...
+        </plugins>
+    </pluginManagement>
+</build>
+----
+
+* update the following property/ies in the `pom.xml` of the consuming webapp module (with `<packaging>war</packaging>`): +
++
+[source,xml]
+----
+<properties>
+    ...
+    <maven-war-plugin.warName>simplewar</maven-war-plugin.warName>          <!--1-->
+    ...
+</properties>
+----
+<1> the name of the war file to generate.
+
+* add the following to the `pom.xml` of the consuming module: +
 +
 [source,xml]
 ----
@@ -48,7 +80,7 @@ To configure:
                     <mixin>
                         <groupId>com.danhaywood.mavenmixin</groupId>
                         <artifactId>jettywar</artifactId>
-                        <version>0.0.1</version>
+                        <version>${mavenmixin-jettywar.version}</version>
                     </mixin>
                 </mixins>
             </configuration>
@@ -57,7 +89,6 @@ To configure:
 </build>
 ----
 
-* Specify the mandatory input properties (see above).
 
 
 The packaging sets up a manifest that references two properties, `maven.version` and `agent.name`.
@@ -87,7 +118,7 @@ To disable the (profile contributed by this) mixin, pass the following system pr
 
 [source,bash]
 ----
-mvn -Dskip.danhaywood-mavenmixin-jettywar
+mvn -Dskip.mavenmixin-jettywar
 ----
 
 
@@ -119,6 +150,7 @@ None currently
 
 == Change Log
 
+* `0.0.2` - updates README for properties and plugin management, shortens property names and profile id
 * `0.0.1` - first release; released using `maven-war-plugin:2.4` and `jetty-maven-plugin:9.3.5.v20151012`
 
 
@@ -172,8 +204,8 @@ For example:
 
 [source]
 ----
-sh release.sh 0.0.1 \
-              0.0.2-SNAPSHOT \
+sh release.sh 0.0.2 \
+              0.0.3-SNAPSHOT \
               dan@haywood-associates.co.uk \
               "this is not really my passphrase"
 ----
@@ -193,7 +225,7 @@ If the script completes successfully, then push changes:
 [source]
 ----
 git push origin master
-git push origin 0.0.1
+git push origin 0.0.2
 ----
 
 If the script fails to complete, then identify the cause, perform a `git reset --hard` to start over and fix the issue before trying again.

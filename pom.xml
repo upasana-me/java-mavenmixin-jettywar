@@ -37,25 +37,29 @@
         </developer>
     </developers>    
 
-    <properties>
-        <danhaywood-mavenmixin-jettywar.warName>simplewar</danhaywood-mavenmixin-jettywar.warName>
-    </properties>
-        
     <profiles>
         <profile>
-            <id>danhaywood-mavenmixin-jettywar</id>
+            <id>mavenmixin-jettywar</id>
             <activation>
                 <property>
-                    <name>!skip.danhaywood-mavenmixin-jettywar</name>
+                    <name>!skip.mavenmixin-jettywar</name>
                 </property>
             </activation>
+
+            <properties>
+                <maven-war-plugin.version>2.4</maven-war-plugin.version>
+                <jetty-maven-plugin.version>9.3.5.v20151012</jetty-maven-plugin.version>
+
+                <maven-war-plugin.warName>simplewar</maven-war-plugin.warName>
+            </properties>
+
             <build>
                 <plugins>
                     <plugin>
                         <artifactId>maven-war-plugin</artifactId>
-                        <version>2.4</version>
+                        <version>${maven-war-plugin.version}</version>
                         <configuration>
-                            <warName>${danhaywood-mavenmixin-jettywar.warName}</warName>
+                            <warName>${maven-war-plugin.warName}</warName>
                             <archive>
                                 <manifest>
                                     <addClasspath>false</addClasspath>
@@ -75,7 +79,7 @@
                     <plugin>
                         <groupId>org.eclipse.jetty</groupId>
                         <artifactId>jetty-maven-plugin</artifactId>
-                        <version>9.3.5.v20151012</version>
+                        <version>${jetty-maven-plugin.version}</version>
                     </plugin>
                 </plugins>
             </build>
