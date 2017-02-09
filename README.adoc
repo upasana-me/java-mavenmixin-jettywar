@@ -58,7 +58,7 @@ and: +
 ----
 <properties>
     ...
-    <maven-war-plugin.warName>simplewar</maven-war-plugin.warName>          <!--1-->
+    <maven-war-plugin.warName>${project.parent.artifactId}</maven-war-plugin.warName>          <!--1-->
     ...
 </properties>
 ----
