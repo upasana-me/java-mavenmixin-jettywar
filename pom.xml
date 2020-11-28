@@ -48,7 +48,7 @@
 
             <properties>
                 <maven-war-plugin.version>2.4</maven-war-plugin.version>
-                <jetty-maven-plugin.version>9.3.5.v20151012</jetty-maven-plugin.version>
+                <jetty-maven-plugin.version>9.4.35</jetty-maven-plugin.version>
 
                 <maven-war-plugin.warName>${project.parent.artifactId}</maven-war-plugin.warName>
             </properties>
